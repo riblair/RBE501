@@ -3,7 +3,7 @@ clc;
 close all;
 
 %% Setup robot
-travelTime = 2; % Defines the travel time
+travelTime = 1.25; % Defines the travel time
 robot = Robot(); % Creates robot object
 robot.writeTime(travelTime); % Write travel time
 robot.writeMotorState(true); % Write position mode
