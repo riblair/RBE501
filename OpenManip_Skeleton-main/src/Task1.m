@@ -13,8 +13,8 @@ R_A = [0 0.71 -0.71;
     0 0.71 0.71; 
     1 0 0];
 
-R_B = [0 0.71 -0.71; 
-    0 -0.71 -0.71; 
+R_B = [0 -0.6766 -0.7363; 
+    0 0.7363 -0.6766; 
     1 0 0];
 
 T_A = [R_B A; 0 0 0 1]
@@ -44,3 +44,18 @@ pause(3)
 
 robot.writeJoints(listPos(3, :));
 pause(3)
+
+
+for baseWayPoint = baseWayPoints % Iterate through waypoints
+
+    robot.writeJoints(); % Write joint values
+
+    tic; % Start timer
+
+    while toc < travelTime
+        disp(robot.getJointsReadings()); % Read joint values
+    end
+
+end
+
+
