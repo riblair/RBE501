@@ -13,7 +13,7 @@ robot.writeJoints(0); % Write joints to zero position
 pause(travelTime); % Wait for trajectory completion
 setPointTravelTime = 0.005;
 robot.writeTime(0.005);
-tf = 10;
+tf = 3;
 
 
 T_1 = [0, .71, -.71,  1.85*10^-1;
@@ -46,15 +46,14 @@ iter = 1;
 % w2 = [42.8, 33.06, 44.3, -77.36];
 % w3 = [      0,  -44.7606,   28.1950,   16.5656];
 % waypoints = [w0;w1;w3;w2];
-% path = LSBP();
-V = 10; %deg/s
+
 for i = 1:size(Places,3) % Iterate through waypoints
     jvs = robot.getJointsReadings();
-    q0 = jvs(1,:);
+    q0 = transpose(jvs(1,:));
     [qf, success] = robot.IkinSpace501(Places(:,:,i), guesses(:,i));
     disp(qf)
     
-    path = LSPB(q0,qf,tf,V);
+    path = LSPB(q0,qf,tf,0.3333);
     
      % Start timer
     tic;
