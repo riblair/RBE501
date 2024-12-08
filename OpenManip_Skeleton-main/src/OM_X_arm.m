@@ -6,8 +6,6 @@
 classdef OM_X_arm < handle
     properties
         % DX_XM430_W350 Servos
-        motor2_offset = -45; % Example offset, adjust as needed
-        motor3_offset = -48;
         motorsNum;
         motorIDs;
         gripperID;
@@ -132,23 +130,12 @@ classdef OM_X_arm < handle
                         otherwise
                             error("'%s' is not a valid number of bytes to read.\n", n);
                     end
-        
-                    % Subtract offsets after reading for motors 2 and 3
-                    if id == self.motorIDs(2)
-                        result(i) = result(i) - self.motor2_offset;
-                    elseif id == self.motorIDs(3)
-                        result(i) = result(i) - self.motor3_offset;
-                    end
                 end
         
             else % Bulk Write if msgs exists
                 if length(msgs) == 1
                     msgs = repelem(msgs, 4);
                 end
-        
-                % Add offset to motor 3 joint angle before writing
-                msgs(2) = msgs(2) + self.motor2_offset;
-                msgs(3) = msgs(3) + self.motor3_offset;
         
                 groupBulkWriteClearParam(self.groupwrite_num);
                 for i = 1:length(self.motorIDs)
