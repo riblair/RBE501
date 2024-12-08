@@ -12,7 +12,7 @@ robot.writeMotorState(true); % Write position mode
 robot.writeJoints(0); % Write joints to zero position
 pause(travelTime); % Wait for trajectory completion
 
-tf = 10;
+tf = 2;
 
 T_1 = [0, .71, -.71,  1.85*10^-1;
        0, .71,  .71, -1.85*10^-1;
@@ -35,7 +35,8 @@ theta0_1 = [-0.78;0;0;0];
 theta0_2 = [0.7432;0;0;0];
 theta0_3 = [0;0;0;0];
 guesses = [theta0_1, theta0_3, theta0_2];
-j_angles = zeros(4, 1000);
+j_angles  = zeros(4, 1000);
+j_velos  = zeros(4, 1000);
 t_values = zeros(1, 1000);
 iter = 1;
 
@@ -43,35 +44,38 @@ iter = 1;
 
 robot.writeJoints(qf)
 pause(travelTime)
-
-
+robot.writeMode('v')
+robot.writeMotorState(true); % Write position mode
+% 
 % w0 =  [0,0,0,0];
 % w1 = [-44.7, -8.8, 28.74, -19.88];
 % w2 = [42.8, 33.06, 44.3, -77.36];
 % w3 = [      0,  -44.7606,   28.1950,   16.5656];
 % waypoints = [w0;w1;w3;w2];
-
-setPointTravelTime = 0.005;
-robot.writeTime(0.005);
+% 
+% setPointTravelTime = 0.005;
+% robot.writeTime(0.005);
 for i = 2:size(Places,3) % Iterate through waypoints
     jvs = robot.getJointsReadings();
     q0 = transpose(jvs(1,:));
     [qf, success] = robot.IkinSpace501(Places(:,:,i), guesses(:,i));
     disp(qf)
-    
+
     path = LSPB(q0,qf,tf,0.3333);
-    
+
      % Start timer
     tic;
     while toc < tf
         [q,qdot] = path.curr_increment(toc);
         jvs = robot.getJointsReadings(); % Read joint values
-        robot.writeJoints(transpose(q));
+        robot.writeVelocities(transpose(qdot));
         t_values(iter) = toc+(i-2)*tf;
         j_angles(:,iter) = jvs(1,:);
+        j_velos(:,iter) = jvs(2,:);
         iter = iter + 1;
     end
 end
-saveString = "Task2/Task2Data" + num2str(tf) + "sec.mat";
-save(saveString, "j_angles", "iter", "t_values")
+robot.writeVelocities(0);
+saveString = "Task3/Task3Data" + num2str(tf) + "sec.mat";
+save(saveString, "j_angles", "j_velos", "iter", "t_values")
 

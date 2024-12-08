@@ -25,7 +25,7 @@ classdef Robot < OM_X_arm
             addpath('../../ModernRobotics-master/packages/MATLAB/mr/');
             % Change robot to position mode with torque enabled by default
             % Feel free to change this as desired
-            self.writeMode('v');
+            self.writeMode('cp');
             self.writeMotorState(true);
 
             % Set the robot to move between positions with a 5 second profile
