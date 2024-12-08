@@ -3,31 +3,36 @@ clear;
 close all;
 
 load Task2Data10sec.mat
-j_20_c = j_angles;
-j_20_t = t_values - 10;
-j_20_i = iter;
+j_10_c = j_angles;
+j_10_t = t_values;
+j_10_i = iter;
 
 load Task2Data2sec.mat
-j_3_c = j_angles;
-j_3_t = t_values -2;
-j_3_i = iter;
-
-
+j_2_c = j_angles;
+j_2_t = t_values;
+j_2_i = iter;
 
 figure;
 hold on;
 grid on;
-plot(j_20_t(1:(j_20_i-1)),j_20_c(1,1:(j_20_i-1)), 'DisplayName', '20s Travel Time J1')
-plot(j_20_t(1:(j_20_i-1)),j_20_c(2,1:(j_20_i-1)), 'DisplayName', '20s Travel Time J2')
-plot(j_20_t(1:(j_20_i-1)),j_20_c(3,1:(j_20_i-1)), 'DisplayName', '20s Travel Time J3')
-plot(j_20_t(1:(j_20_i-1)),j_20_c(4,1:(j_20_i-1)), 'DisplayName', '20s Travel Time J4')
-% plot(j_3_t(1:(j_3_i-1)),j_3_c(1,1:(j_3_i-1)), 'DisplayName', '3s Travel Time J1')
-% plot(j_3_t(1:(j_3_i-1)),j_3_c(2,1:(j_3_i-1)), 'DisplayName', '3s Travel Time J2')
-% plot(j_3_t(1:(j_3_i-1)),j_3_c(3,1:(j_3_i-1)), 'DisplayName', '3s Travel Time J3')
-% plot(j_3_t(1:(j_3_i-1)),j_3_c(4,1:(j_3_i-1)), 'DisplayName', '3s Travel Time J4')
-
-
-title("Joing Angle vs Time LSPB")
+plot(j_10_t(1:(j_10_i-1)),j_10_c(1,1:(j_10_i-1)), 'DisplayName', 'Joint 1')
+plot(j_10_t(1:(j_10_i-1)),j_10_c(2,1:(j_10_i-1)), 'DisplayName', 'Joint 2')
+plot(j_10_t(1:(j_10_i-1)),j_10_c(3,1:(j_10_i-1)), 'DisplayName', 'Joint 3')
+plot(j_10_t(1:(j_10_i-1)),j_10_c(4,1:(j_10_i-1)), 'DisplayName', 'Joint 4')
+title("Joint Angle vs Time (LSPB w/ 10sec Travel Time)")
 xlabel("Time (s)")
-ylabel("Joint Angle")
+ylabel("Joint Angle (degree)")
+legend
+hold off;
+
+figure;
+hold on;
+grid on;
+plot(j_2_t(1:(j_2_i-1)),j_2_c(1,1:(j_2_i-1)), 'DisplayName', 'Joint 1')
+plot(j_2_t(1:(j_2_i-1)),j_2_c(2,1:(j_2_i-1)), 'DisplayName', 'Joint 2')
+plot(j_2_t(1:(j_2_i-1)),j_2_c(3,1:(j_2_i-1)), 'DisplayName', 'Joint 3')
+plot(j_2_t(1:(j_2_i-1)),j_2_c(4,1:(j_2_i-1)), 'DisplayName', 'Joint 4')
+title("Joint Angle vs Time (LSPB w/ 2sec Travel Time)")
+xlabel("Time (s)")
+ylabel("Joint Angle (degree)")
 legend

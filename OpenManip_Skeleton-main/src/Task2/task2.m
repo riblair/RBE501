@@ -14,7 +14,6 @@ pause(travelTime); % Wait for trajectory completion
 
 tf = 10;
 
-
 T_1 = [0, .71, -.71,  1.85*10^-1;
        0, .71,  .71, -1.85*10^-1;
        1,   0,    0,  1.85*10^-1;
@@ -69,11 +68,11 @@ for i = 2:size(Places,3) % Iterate through waypoints
         jvs = robot.getJointsReadings(); % Read joint values
         robot.writeJoints(transpose(q));
         disp(q);
-        t_values(iter) = toc+(i-1)*tf;
+        t_values(iter) = toc+(i-2)*tf;
         j_angles(:,iter) = jvs(1,:);
         iter = iter + 1;
     end
 end
-
-save("Task2Data10sec.mat", "j_angles", "iter", "t_values")
+saveString = "Task2/Task2Data" + num2str(tf) + "sec.mat";
+save(saveString, "j_angles", "iter", "t_values")
 
