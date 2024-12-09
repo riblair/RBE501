@@ -12,7 +12,7 @@ robot.writeMotorState(true); % Write position mode
 robot.writeJoints(0); % Write joints to zero position
 pause(travelTime); % Wait for trajectory completion
 
-tf = 10;
+tf = 2;
 tb = 0.3333;
 
 T_1 = [0, .71, -.71,  1.85*10^-1;
@@ -38,8 +38,10 @@ theta0_3 = [0;0;0;0];
 guesses = [theta0_1, theta0_3, theta0_2];
 
 % data recording vars
-j_angles  = zeros(4, 1000);
+j_angles     = zeros(4, 1000);
+j_angles_des = zeros(4, 1000);
 j_velos  = zeros(4, 1000);
+j_velos_des = zeros(4, 1000);
 t_values = zeros(1, 1000);
 iter = 1;
 
@@ -70,7 +72,6 @@ for i = 2:size(Places,3) % Iterate through waypoints
     disp(qf)
 
     path = LSPB(q0,qf,tf,tb, qdot_inits(:, i), qdot_finals(:, i));
-
      % Start timer
     tic;
     while toc < tf
@@ -79,11 +80,13 @@ for i = 2:size(Places,3) % Iterate through waypoints
         robot.writeVelocities(transpose(qdot));
         t_values(iter) = toc+(i-2)*tf;
         j_angles(:,iter) = jvs(1,:);
+        j_angles_des(:, iter) = q;
         j_velos(:,iter) = jvs(2,:);
+        j_velos_des(:, iter) = qdot;
         iter = iter + 1;
     end
 end
 robot.writeVelocities(0);
 saveString = "Task3/Task3DataStiched" + num2str(tf) + "sec.mat";
-save(saveString, "j_angles", "j_velos", "iter", "t_values")
+save(saveString, "j_angles", "j_velos", "iter", "t_values", "j_angles_des", "j_velos_des")
 
