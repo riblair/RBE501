@@ -43,18 +43,18 @@ classdef LSPB
             if t <= self.tb
 %                 q = self.q0 + self.alpha1 / 2*power(t,2); % + self.qdot_0 * t ??
                 qdot = self.alpha1 * t + self.qdot_0;
-                q = self.qdot_0*t + (qdot - self.qdot_0)* t/2;
+                q = self.qdot_0*t + (qdot - self.qdot_0)* t/2 + self.q0;
             elseif t <= self.tf - self.tb
 %                 q = (self.qf+self.q0-self.V*self.tf)/2 + self.V*t;
                 qdot = self.V;
                 q = self.qdot_0*self.tb + (self.V - self.qdot_0)* self.tb/2+...
-                        (t-self.tb)*self.V;
+                        (t-self.tb)*self.V + self.q0;
             elseif t <= self.tf
 %                 q = self.qf - self.alpha2/2*power(t,2) - self.alpha2/2*power(self.tf,2) + self.alpha2*self.tf*t; % + something ??
                 qdot = self.V + (self.alpha2 * (t-(self.tf-self.tb)));
                 q = self.qdot_0*self.tb + (self.V - self.qdot_0)*self.tb/2+...\
                         self.V*(self.tf - 2*self.tb) + (self.V - qdot)*(t - (self.tf-self.tb))/2+...
-                        qdot * (t - (self.tf-self.tb));
+                        qdot * (t - (self.tf-self.tb)) + self.q0;
             else
                 error("Invalid Time Enter")
             end
