@@ -36,26 +36,42 @@ theta0_2 = [0.7432;0;0;0];
 theta0_3 = [0;0;0;0];
 guesses = [theta0_1, theta0_3, theta0_2];
 
-currents = [];
+% currents = [];
 
-for i = 1:size(Places,3) % Iterate through waypoints
-    [angles, success] = robot.IkinSpace501(Places(:,:,i), guesses(:,i));
-    disp(angles)
-    robot.writeJoints(angles)
-    tic; % Start timer
-    % iter = 1;
-    while toc < travelTime
-       
-        jvs = robot.getJointsReadings(); % Read joint values
-        currents(i) = [currents; jvs(3, :)];
-%         t_values(iter) = toc+(i-1)*travelTime;
-%         j2_current(iter) = jvs(2,2);
-%         iter = iter + 1;
-    end
-    disp(jvs(3, :))
-    pause(2)
+% for i = 1:size(Places,3) % Iterate through waypoints
+%     [angles, success] = robot.IkinSpace501(Places(:,:,i), guesses(:,i));
+%     disp(angles)
+%     robot.writeJoints(angles)
+%     tic; % Start timer
+%     % iter = 1;
+%     while toc < travelTime
+%        
+%         jvs = robot.getJointsReadings(); % Read joint values
+%         currents = [currents; jvs(3, :)];
+% %         t_values(iter) = toc+(i-1)*travelTime;
+% %         j2_current(iter) = jvs(2,2);
+% %         iter = iter + 1;
+%     end
+%     disp(jvs(3, :))
+%     pause(2)
+% 
+% end
+
+pos = [0 0 0 0];
+robot.writeJoints(pos);
+
+pause(2)
+
+jointVals = robot.getJointsReadings();
+currents = jointVals(3, :);
+
+torque = transpose(currents*0.0045)
+
+jb = JacobianBody(robot.BList, pos)
 
 
-end
+F = pinv(transpose(jb))*torque;
+disp(F)
+
 
 

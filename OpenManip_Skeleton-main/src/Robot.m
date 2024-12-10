@@ -14,6 +14,7 @@ classdef Robot < OM_X_arm
         GList;
         eomg;
         ev;
+        BList;
     end
 
     methods
@@ -42,6 +43,7 @@ classdef Robot < OM_X_arm
             S3 = [0; 1; 0; -2.24326*10^-1; 0; 2.4*10^-2];
             S4 = [0; 1; 0; -2.24326*10^-1; 0; 1.48*10^-1];
             self.SList = [S1,S2,S3,S4];
+            self.BList = [[1;0;0;0;0.2814;0],[0;1;0;-0.2814;0;-0.128],[0;1;0;-0.2584;0;0],[0;1;0;-0.1334;0;0]];
             
             % Home configuration
             self.M = [  0, 0, -1,   2.814*10^-1;
