@@ -65,9 +65,8 @@ while toc < travelTime
     j_angles = transpose(jvs(1,:));
     j_vels = transpose(jvs(2,:));
     j_accs = (j_vels-prev_j_vels)./(toc-prev_toc);
-    j1 = [j_angles(1),j_vels(1),j_accs(1)];
     j_current = transpose(jvs(3,:));
-    j_torques_guess(:,iter) = j_current.*0.0045;
+    j_torques_guess(:,iter) = j_current.*robot.K;
     j_torques_inv(:,iter) = InverseDynamics(deg2rad(j_angles),deg2rad(j_vels),deg2rad(j_accs),[0;0;-9.8],[0;0;0;0;0;0],robot.MList, robot.GList, robot.SList);
     iter = iter + 1;
 
