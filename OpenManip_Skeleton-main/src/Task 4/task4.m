@@ -57,21 +57,24 @@ guesses = [theta0_1, theta0_3, theta0_2];
 % 
 % end
 
-pos = [0 0 0 0];
-robot.writeJoints(pos);
+home_pos = [0 0 0 0];
+A_pos = [-44.7, -8.8, 28.74, -19.88];
+B_pos = [42.8, 33.06, 44.3, -77.36];
 
+robot.writeJoints(A_pos);
 pause(2)
-
 jointVals = robot.getJointsReadings();
-currents = jointVals(3, :);
-
-torque = transpose(currents*0.0045)
-
-jb = JacobianBody(robot.BList, pos)
+calcWrench(jointVals)
 
 
-F = pinv(transpose(jb))*torque;
-disp(F)
 
+function F = calcWrench(jointValues)
+    currents = jointValues(3, :);
+    pos = jointValues(1, :);
+    torque = transpose(currents*0.0045);
+    jb = JacobianBody(robot.BList, pos);
+    F = pinv(transpose(jb))*torque;
+    disp(F)
+end
 
 
