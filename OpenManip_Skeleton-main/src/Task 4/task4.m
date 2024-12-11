@@ -71,7 +71,7 @@ calcWrench(jointVals)
 function F = calcWrench(jointValues)
     currents = jointValues(3, :);
     pos = jointValues(1, :);
-    torque = transpose(currents*0.0045);
+    torque = transpose(currents*robot.K);
     jb = JacobianBody(robot.BList, pos);
     F = pinv(transpose(jb))*torque;
     disp(F)

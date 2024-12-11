@@ -15,6 +15,7 @@ classdef Robot < OM_X_arm
         eomg;
         ev;
         BList;
+        K;
     end
 
     methods
@@ -93,6 +94,8 @@ classdef Robot < OM_X_arm
             self.GList = cat(3,G1,G2,G3,G4);
             self.eomg = 0.005;
             self.ev = 0.01;
+
+            self.K = 0.0045; %current to torque conversion
         end
 
         function [angles, success] = IkinSpace501(self, T_des, T_guess)
