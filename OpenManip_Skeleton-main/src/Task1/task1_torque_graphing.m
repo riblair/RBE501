@@ -22,4 +22,5 @@ plot(j_10_t(1:(j_10_i-1)),j_t_i(4,1:(j_10_i-1)), 'DisplayName', 'Joint 4 Torque 
 hold off;
 xlabel("Time (s)")
 ylabel("Joint Torque")
+title("Joint Torque Estimates at Max Speed")
 legend

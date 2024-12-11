@@ -45,17 +45,19 @@ iter = 1;
 % w3 = [      0,  -44.7606,   28.1950,   16.5656];
 % waypoints = [w0;w1;w3;w2];
 robot.writeJoints([-44.7, -8.8, 28.74, -19.88]);
-pause(travelTime);
+pause(travelTime + 0.5);
 
+travelTime = 0.5;
+robot.writeTime(travelTime)
 [angles, success] = robot.IkinSpace501(T_2, theta0_2);
 disp(angles)
 robot.writeJoints(angles)
 
-tic; % Start timer
 % iter = 1;
 jvs = robot.getJointsReadings();
 prev_j_vels = transpose(jvs(2,:));
 prev_toc = zeros(4,1);
+tic; % Start timer
 while toc < travelTime
    
     jvs = robot.getJointsReadings(); % Read joint values
@@ -64,7 +66,6 @@ while toc < travelTime
     j_vels = transpose(jvs(2,:));
     j_accs = (j_vels-prev_j_vels)./(toc-prev_toc);
     j1 = [j_angles(1),j_vels(1),j_accs(1)];
-    disp(j1)
     j_current = transpose(jvs(3,:));
     j_torques_guess(:,iter) = j_current.*0.0045;
     j_torques_inv(:,iter) = InverseDynamics(deg2rad(j_angles),deg2rad(j_vels),deg2rad(j_accs),[0;0;-9.8],[0;0;0;0;0;0],robot.MList, robot.GList, robot.SList);
