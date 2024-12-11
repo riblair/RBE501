@@ -127,10 +127,10 @@ classdef Robot < OM_X_arm
             time_ms = time * DX_XM430_W350.MS_PER_S;
             acc_time_ms = acc_time * DX_XM430_W350.MS_PER_S;
 
-            disp("time")
-            disp(time_ms)
-            disp("acc time")
-            disp(acc_time_ms)
+            % disp("time")
+            % disp(time_ms)
+            % disp("acc time")
+            % disp(acc_time_ms)
 
             self.bulkReadWrite(DX_XM430_W350.PROF_ACC_LEN, DX_XM430_W350.PROF_ACC, acc_time_ms);
             self.bulkReadWrite(DX_XM430_W350.PROF_VEL_LEN, DX_XM430_W350.PROF_VEL, time_ms);
