@@ -12,10 +12,10 @@ robot.writeMotorState(true); % Write position mode
 robot.writeJoints(0); % Write joints to zero position
 pause(travelTime); % Wait for trajectory completion
 
-tf = 10;
+tf = 5;
 tb = 0.3333;
 q1_interim_velo = 15;
-Kp = 0; % 7 for 5 seconds, 5 for 10 seconds
+Kp = 5;
 
 T_1 = [0, .71, -.71,  1.85*10^-1;
        0, .71,  .71, -1.85*10^-1;

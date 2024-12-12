@@ -63,18 +63,20 @@ B_pos = [42.8, 33.06, 44.3, -77.36];
 
 robot.writeJoints(A_pos);
 pause(2)
-jointVals = robot.getJointsReadings();
-calcWrench(jointVals)
+
+while true
+    jointVals = robot.getJointsReadings();
+    calcWrench(robot, jointVals)
+end
 
 
-
-function F = calcWrench(jointValues)
+function F = calcWrench(robot, jointValues)
     currents = jointValues(3, :);
     pos = jointValues(1, :);
-    torque = transpose(currents*robot.K);
+    torque = transpose(currents * robot.K);
     jb = JacobianBody(robot.BList, pos);
     F = pinv(transpose(jb))*torque;
-    disp(F)
+    % disp(F)
 end
 
 
