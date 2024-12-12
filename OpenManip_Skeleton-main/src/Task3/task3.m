@@ -12,8 +12,10 @@ robot.writeMotorState(true); % Write position mode
 robot.writeJoints(0); % Write joints to zero position
 pause(travelTime); % Wait for trajectory completion
 
-tf = 2;
+tf = 10;
 tb = 0.3333;
+q1_interim_velo = 15;
+Kp = 0; % 7 for 5 seconds, 5 for 10 seconds
 
 T_1 = [0, .71, -.71,  1.85*10^-1;
        0, .71,  .71, -1.85*10^-1;
@@ -42,6 +44,7 @@ j_angles     = zeros(4, 1000);
 j_angles_des = zeros(4, 1000);
 j_velos  = zeros(4, 1000);
 j_velos_des = zeros(4, 1000);
+% j_velos_cmd = zeros(4, 1000);
 t_values = zeros(1, 1000);
 iter = 1;
 
@@ -61,9 +64,9 @@ robot.writeMotorState(true); % Write position mode
 % 
 % setPointTravelTime = 0.005;
 % robot.writeTime(0.005);
-q1_interim_velo = 15;
 qdot_inits = [[0;0;0;0], [0;0;0;0], [q1_interim_velo;0;0;0]];
 qdot_finals = [[0;0;0;0], [q1_interim_velo;0;0;0], [0;0;0;0]];
+
 
 for i = 2:size(Places,3) % Iterate through waypoints
     jvs = robot.getJointsReadings();
@@ -77,16 +80,19 @@ for i = 2:size(Places,3) % Iterate through waypoints
     while toc < tf
         [q,qdot] = path.curr_increment(toc);
         jvs = robot.getJointsReadings(); % Read joint values
-        robot.writeVelocities(transpose(qdot));
+        curr_q = transpose(jvs(1,:));
+        qdot_kp = qdot + (q-curr_q)*Kp;
+        robot.writeVelocities(transpose(qdot_kp));
         t_values(iter) = toc+(i-2)*tf;
         j_angles(:,iter) = jvs(1,:);
         j_angles_des(:, iter) = q;
         j_velos(:,iter) = jvs(2,:);
         j_velos_des(:, iter) = qdot;
+        % j_velos_cmd(:,iter) = qdot_kp;
         iter = iter + 1;
     end
 end
 robot.writeVelocities(0);
-saveString = "Task3/Task3DataStiched" + num2str(tf) + "sec.mat";
-save(saveString, "j_angles", "j_velos", "iter", "t_values", "j_angles_des", "j_velos_des")
+saveString = "Task3/Task3DataStiched" + num2str(tf) + "secNoComp.mat";
+save(saveString, "j_angles", "j_velos", "iter", "t_values", "j_angles_des", "j_velos_des") % ,"j_velos_cmd"
 
