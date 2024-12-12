@@ -2,41 +2,18 @@ clc;
 clear;
 close all;
 
-load maxSpeed.mat
-load max_iter.mat
-load maxt.mat
-j2_100_c = j2_current;
-j2_100_t = t_values;
-j2_100_i = iter;
-
-load 80Speed.mat 
-load 80_iter.mat
-load 80t.mat
-j2_80_c = j2_current;
-j2_80_t = t_values;
-j2_80_i = iter;
-
-load 60Speed.mat 
-load 60_iter.mat
-load 60t.mat
-j2_60_c = j2_current;
-j2_60_t = t_values;
-j2_60_i = iter;
-
-load 40Speed.mat 
-load 40_iter.mat
-load 40t.mat
-j2_40_c = j2_current;
-j2_40_t = t_values;
-j2_40_i = iter;
+load Task1Data0.5sec.mat
+j2_c = j_currents;
+j2_t = t_values;
+j2_i = iters-1;
 
 figure;
 hold on;
 grid on;
-plot(j2_100_t(1:(j2_100_i-1)),j2_100_c(1:(j2_100_i-1)), 'DisplayName', '100% (0.5 Travel Time)')
-plot(j2_80_t(1:(j2_80_i-1)),j2_80_c(1:(j2_80_i-1)), 'DisplayName', '80% (0.625 Travel Time)')
-plot(j2_60_t(1:(j2_60_i-1)),j2_60_c(1:(j2_60_i-1)), 'DisplayName', '60% (0.833 Travel Time)')
-plot(j2_40_t(1:(j2_40_i-1)),j2_40_c(1:(j2_40_i-1)), 'DisplayName', '40% (1.25 Travel Time)')
+plot(j2_t(1, 1:j2_i(1)), j2_c(1, 1:j2_i(1)), 'DisplayName', '100% (0.5 Travel Time)', 'Color', 'red');
+plot(j2_t(2, 1:j2_i(2)), j2_c(2, 1:j2_i(2)), 'DisplayName', '80% (0.625 Travel Time)', 'Color', 'green');
+plot(j2_t(3, 1:j2_i(3)), j2_c(3, 1:j2_i(3)), 'DisplayName', '60% (0.833 Travel Time)', 'Color', 'blue');
+plot(j2_t(4, 1:j2_i(4)), j2_c(4, 1:j2_i(4)), 'DisplayName', '40% (1.25 Travel Time)', 'Color', 'black');
 
 title("Current vs Time of Joint 2")
 xlabel("Time (s)")

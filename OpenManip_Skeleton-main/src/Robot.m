@@ -14,6 +14,8 @@ classdef Robot < OM_X_arm
         GList;
         eomg;
         ev;
+        BList;
+        K;
     end
 
     methods
@@ -42,6 +44,7 @@ classdef Robot < OM_X_arm
             S3 = [0; 1; 0; -2.24326*10^-1; 0; 2.4*10^-2];
             S4 = [0; 1; 0; -2.24326*10^-1; 0; 1.48*10^-1];
             self.SList = [S1,S2,S3,S4];
+            self.BList = [[1;0;0;0;0.2814;0],[0;1;0;-0.2814;0;-0.128],[0;1;0;-0.2584;0;0],[0;1;0;-0.1334;0;0]];
             
             % Home configuration
             self.M = [  0, 0, -1,   2.814*10^-1;
@@ -91,6 +94,8 @@ classdef Robot < OM_X_arm
             self.GList = cat(3,G1,G2,G3,G4);
             self.eomg = 0.005;
             self.ev = 0.01;
+
+            self.K = 0.0045; %current to torque conversion
         end
 
         function [angles, success] = IkinSpace501(self, T_des, T_guess)
@@ -125,10 +130,10 @@ classdef Robot < OM_X_arm
             time_ms = time * DX_XM430_W350.MS_PER_S;
             acc_time_ms = acc_time * DX_XM430_W350.MS_PER_S;
 
-            disp("time")
-            disp(time_ms)
-            disp("acc time")
-            disp(acc_time_ms)
+            % disp("time")
+            % disp(time_ms)
+            % disp("acc time")
+            % disp(acc_time_ms)
 
             self.bulkReadWrite(DX_XM430_W350.PROF_ACC_LEN, DX_XM430_W350.PROF_ACC, acc_time_ms);
             self.bulkReadWrite(DX_XM430_W350.PROF_VEL_LEN, DX_XM430_W350.PROF_VEL, time_ms);
